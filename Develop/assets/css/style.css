@@ -55,7 +55,7 @@ span {
 }
 .navbar a:hover{
 	background: white;
-	color: #EF9A0F;
+	color: turquoise;
 }
 
 .news{
@@ -78,13 +78,13 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: #EF9A0F;
+    color: turquoise;
     transition: .4s;
 }
 
 .btn {
-    background-color: #EF9A0F;
-    color:#0C0B6C;
+    background-color: turquoise;
+    color:black;
     text-decoration: none;
     border: 2px solid transparent;
     font-weight: bold;
@@ -180,7 +180,7 @@ section {
 .doc h2 {
     font-size: var(--main-font);
     margin-bottom: 30px;
-    color: #EF9A0F;
+    color: turquoise;
 }
 
 .doc-content p {
@@ -228,8 +228,8 @@ section {
     width: 460 px;
     max-width: 100%;
     padding: 12px 15px;
-    background: #515151;
-    color: var(--bg-color);
+    background: whitesmoke;
+    color: black;
     border: none;
     outline: none;
     margin: 0px 10px 20px 0px;
@@ -239,8 +239,8 @@ section {
 
 .action form input[type="submit"] {
     padding: 10px 35px;
-    background: var(--bg-color);
-    color: var(--text-color);
+    background: turquoise;
+    color: black;
     border: none;
     outline: none;
     margin: 0px 10px 20px 0px;
