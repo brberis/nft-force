@@ -95,7 +95,7 @@ var getNftsByAccount = function(accountAddress) {
   });    
 }
 
-getNftsByAccount(account);
+// getNftsByAccount(account);
 
 
 
