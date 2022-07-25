@@ -20,6 +20,19 @@ var headers = {
     }
   }
 
+
+// famous nft menu  
+var famousNftDivMenuEl =  document.querySelector("#famous");
+var aMenuEl = [];
+for (let i = 0; i < featured.length; i++) {
+  aMenuEl[i] = document.createElement("a");
+  aMenuEl[i].classList.add("navbar-item");
+  aMenuEl[i].href = "index.html?wallet=" + featured[i].wallet;
+  aMenuEl[i].textContent = featured[i].name;
+  famousNftDivMenuEl.appendChild(aMenuEl[i]);
+}
+
+
 // fetch last 50 ntfs contract_addresses
 var getNfts = function() {
   var apiUrl = "https://api.nftport.xyz/v0/nfts?chain=ethereum";
@@ -28,7 +41,7 @@ var getNfts = function() {
       // request was successful
       if (response.ok) {
         response.json().then(function(data) {
-          console.log(data);
+          // console.log(data);
           getByContract(data.nfts);
 
         });
@@ -42,24 +55,28 @@ var getNfts = function() {
 
 // fetch by contract_addresses
 var getByContract = function(nfts) {
-  for (let i = 0; i < 3; i++) {
+  var lastThumbs = [];
+  for (let i = 0; i < 1; i++) {
     setTimeout(function() {   
       var apiUrl = "https://api.nftport.xyz/v0/nfts/" + nfts[i].contract_address + "?chain=ethereum&page_size=2&include=metadata";
       fetch(apiUrl, headers).then(function(response) {
         // request was successful
         if (response.ok) {
           response.json().then(function(data) {
-            console.log(data);
-            getNftDetails(data);
+            if (!lastThumbs.includes(data.nfts[0].cached_file_url)) {
+            // console.log(data);
+            createNftElements(data);
+            }
+            lastThumbs.push(data.nfts[0].cached_file_url);
           });
         } else {
           // if not successful, redirect to homepage
           console.log("error");
         }
       });
-    }, i * 1000)
+    }, i * 1500)
   }
-    
+  console.log(lastThumbs);  
 }
 
 // fetch by contract_addresses
@@ -86,7 +103,7 @@ var getNftsByAccount = function(accountAddress) {
   fetch(apiUrl, headers).then(function(response) {
     if (response.ok) {
       response.json().then(function(data) {
-        console.log(data);
+        // console.log(data);
         getByContract(data.nfts);
       });
     } else {
@@ -95,8 +112,34 @@ var getNftsByAccount = function(accountAddress) {
   });    
 }
 
+var isImage = function (url) {
+  return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
+}
+
+var createNftElements = function (data) {
+  var thumb = data.nfts[0].cached_file_url;
+  console.log(isImage(thumb));
+  if(isImage(thumb)){
+    var gallerySectionEl = document.querySelector("#nft-gallery");
+    var nftDivEl = document.createElement("div");
+    nftDivEl.classList.add("box");
+    // if(data.nfts[0].cache_file_url)
+    var nftImgEl = document.createElement("img");
+    console.log(data.nfts[0].cached_file_url);
+  
+    nftImgEl.src = thumb;
+    console.log(nftDivEl);
+    var h4El = document.createElement("h4");
+    h4El.textContent = data.nfts[0].metadata.name;
+    nftDivEl.appendChild(nftImgEl);
+    nftDivEl.appendChild(h4El);
+    gallerySectionEl.appendChild(nftDivEl);
+  }
+
+}
+
 // getNftsByAccount(account);
 
 
 
-// getNfts();
+getNfts();
