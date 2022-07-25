@@ -1,7 +1,7 @@
 // globals
 var featured = [
                 {name: "Jordan Belfort" , wallet: "0xdbf2445e5049c04cda797dae60ac885e7d79df9d"},
-                {name: "Jake Paul" , wallet: "0xfc811061134fa6ccfd22f56cc91bf6450bea2d01"},
+                {name: "Jake Paul" , wallet: "0xd81e1713C99595Ee29498e521B18491aF9C60415"},
                 {name: "Snoop Dogg" , wallet: "0xce90a7949bb78892f159f428d0dc23a8e3584d75"},
                 {name: "Scotty Sire" , wallet: "0xd0a1454963fb17f427fe744a084facd0ed60a774"},
                 {name: "Lil Mayo" , wallet: "0xa582047f7e50acbc8667523e7f62c200709beaed"},
@@ -43,7 +43,6 @@ var getNfts = function() {
         response.json().then(function(data) {
           // console.log(data);
           getByContract(data.nfts);
-
         });
       } else {
         // if not successful, redirect to homepage
@@ -56,25 +55,27 @@ var getNfts = function() {
 // fetch by contract_addresses
 var getByContract = function(nfts) {
   var lastThumbs = [];
-  for (let i = 0; i < 1; i++) {
-    setTimeout(function() {   
-      var apiUrl = "https://api.nftport.xyz/v0/nfts/" + nfts[i].contract_address + "?chain=ethereum&page_size=2&include=metadata";
-      fetch(apiUrl, headers).then(function(response) {
-        // request was successful
-        if (response.ok) {
-          response.json().then(function(data) {
-            if (!lastThumbs.includes(data.nfts[0].cached_file_url)) {
-            // console.log(data);
-            createNftElements(data);
-            }
-            lastThumbs.push(data.nfts[0].cached_file_url);
-          });
-        } else {
-          // if not successful, redirect to homepage
-          console.log("error");
-        }
-      });
-    }, i * 1500)
+  for (let i = 0; i < 20; i++) {
+    if (nfts[i]) {
+      setTimeout(function() {   
+        var apiUrl = "https://api.nftport.xyz/v0/nfts/" + nfts[i].contract_address + "?chain=ethereum&page_size=2&include=metadata";
+        fetch(apiUrl, headers).then(function(response) {
+          // request was successful
+          if (response.ok) {
+            response.json().then(function(data) {
+              if (!lastThumbs.includes(data.nfts[0].cached_file_url)) {
+              console.log(data);
+              createNftElements(data);
+              }
+              lastThumbs.push(data.nfts[0].cached_file_url);
+            });
+          } else {
+            // if not successful, redirect to homepage
+            console.log("error");
+          }
+        });
+      }, i * 1500)
+    }
   }
   console.log(lastThumbs);  
 }
@@ -103,7 +104,6 @@ var getNftsByAccount = function(accountAddress) {
   fetch(apiUrl, headers).then(function(response) {
     if (response.ok) {
       response.json().then(function(data) {
-        // console.log(data);
         getByContract(data.nfts);
       });
     } else {
@@ -116,21 +116,22 @@ var isImage = function (url) {
   return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
 }
 
+// display nfts
 var createNftElements = function (data) {
   var thumb = data.nfts[0].cached_file_url;
+  var name = data.nfts[0].metadata.name;
+  if (!name) {
+    name = data.contract.name;
+  }
   console.log(isImage(thumb));
   if(isImage(thumb)){
     var gallerySectionEl = document.querySelector("#nft-gallery");
     var nftDivEl = document.createElement("div");
     nftDivEl.classList.add("box");
-    // if(data.nfts[0].cache_file_url)
     var nftImgEl = document.createElement("img");
-    console.log(data.nfts[0].cached_file_url);
-  
     nftImgEl.src = thumb;
-    console.log(nftDivEl);
     var h4El = document.createElement("h4");
-    h4El.textContent = data.nfts[0].metadata.name;
+    h4El.textContent = name;
     nftDivEl.appendChild(nftImgEl);
     nftDivEl.appendChild(h4El);
     gallerySectionEl.appendChild(nftDivEl);
@@ -138,8 +139,17 @@ var createNftElements = function (data) {
 
 }
 
+
+// query parameters
+var params = (new URL(document.location)).searchParams;
+var wallet = params.get("wallet");
+if (wallet) {
+  getNftsByAccount(wallet);
+}
+
+
 // getNftsByAccount(account);
 
 
 
-getNfts();
+// getNfts();
