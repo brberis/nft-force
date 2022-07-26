@@ -319,7 +319,9 @@ footer p{
     }
 }
 
-
+.control {
+    width: 100%;
+  }
 
 @media (max-width: 800px) {
     #menu-icon {

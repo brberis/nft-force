@@ -29,7 +29,9 @@ var heroBodyEl = document.querySelector(".hero-body");
 var famousNftDivMenuEl =  document.querySelector("#famous");
 var gallerySectionEl = document.querySelector("#nft-gallery");
 var mintBtnEl = document.querySelector("#mint-btn");
-
+var searchFormEl = document.querySelector("#search-form");
+var nftInputEl = document.querySelector("#search");
+// var searchEl = document.querySelector("#search");
 
 // change hero to section
 var changeHero = function(type){
@@ -44,6 +46,20 @@ var changeHero = function(type){
   }
 }
 
+// nft search handler
+var formSubmitHandler = function(event) {
+  event.preventDefault();
+  // get value from input element
+  var nftData = nftInputEl.value.trim();
+  if (nftData) {
+    window.location.replace("./index.html?search=" + nftData);
+  }else{
+    nftInputEl.setAttribute("placeholder", "Enter a string")
+    nftInputEl.classList.add("required");
+    nftInputEl.focus()
+  }
+};
+
 // famous nft menu  
 var aMenuEl = [];
 for (let i = 0; i < featured.length; i++) {
@@ -53,6 +69,36 @@ for (let i = 0; i < featured.length; i++) {
   aMenuEl[i].textContent = featured[i].name;
   famousNftDivMenuEl.appendChild(aMenuEl[i]);
 }
+
+// search nft into ethereum 
+var searchNfts = function(search) {
+  var apiUrl = "https://api.nftport.xyz/v0/search?text=" + search;
+  fetch(apiUrl, headers).then(function(response) {
+      // request was successful
+      if (response.ok) {
+        response.json().then(function(data) {
+          console.log(data);
+          loadingMintBtn(true);
+          for (let i = 0; i < data.search_results.length; i++) {
+            if (!thumbs.includes(data.search_results.cached_file_url)) {
+              createNftElements(data.search_results[i], "from_search");
+              thumbs.push(data.search_results[i].cached_file_url);
+            }
+          }
+          loadingMintBtn(false);
+
+
+          thumbs = [];
+        });
+      } else {
+        // if not successful, redirect to homepage
+        console.log("error");
+      }
+
+    });
+}
+
+
 
 // fetch last 50 ntfs contract_addresses
 var getNfts = function() {
@@ -154,21 +200,31 @@ var isImage = function (url) {
 }
 
 // display nfts 
-var createNftElements = function (data) {
-  var thumb = data.nft.cached_file_url;
+var createNftElements = function (data, source) {
   var name = null;
-  if (data.nft.metadata){
-    name = data.nft.metadata.name;
+  if (!source) {
+    var thumb = data.nft.cached_file_url;
+    var adddress = data.nft.contract_address;
+    var tokenId = data.nft.token_id;
+    if (data.nft.metadata){
+      name = data.nft.metadata.name;
+    }
+    if (!name) {
+      name = data.contract.name;
+    }
+  }else if (source == "from_search"){
+    var thumb = data.cached_file_url;
+    var adddress = data.contract_address
+    var tokenId = data.token_id;
+    name = data.name;
   }
-  if (!name) {
-    name = data.contract.name;
-  }
+
   if(isImage(thumb) && viewableNft < nftOnHome){
     console.log("Qty", viewableNft);
     var nftDivEl = document.createElement("div");
     nftDivEl.classList.add("box");
     var aNftEl = document.createElement("a");
-    aNftEl.href = "./index.html?contract-address=" + data.nft.contract_address + "&tokenid=" + data.nft.token_id;
+    aNftEl.href = "./index.html?contract-address=" + adddress + "&tokenid=" + tokenId;
     var nftImgEl = document.createElement("img");
     nftImgEl.src = thumb;
     var h4El = document.createElement("h4");
@@ -281,6 +337,7 @@ var loadingMintBtn = function(state){
 // query parameters
 var params = (new URL(document.location)).searchParams;
 var recent = params.get("recent");
+var search = params.get("search");
 var wallet = params.get("wallet");
 var contracAddress = params.get("contract-address");
 var tokenId = params.get("tokenid");
@@ -292,16 +349,23 @@ if (contracAddress && tokenId){
   changeHero("section");
   getNftDetails(contracAddress, tokenId, true);
 }
+if (search) {
+  nftOnHome = nfts;
+  changeHero("section");
+  addSectionTitle("Search results");
+  searchNfts(search);
+}
 if (recent == 1) {
   nftOnHome = nfts;
   changeHero("section");
   addSectionTitle("Last Minted NFTs");
   getNfts();
 }
-if (!wallet && !recent && !contracAddress) {
-  console.log("sihome",params.length);
+if (!wallet && !recent && !contracAddress && !search) {
   changeHero("hero");
   getNfts();
   loadingMintBtn(false);
 }
+
+searchFormEl.addEventListener("submit", formSubmitHandler);
 
