@@ -21,8 +21,28 @@ var headers = {
                   }
               }
 
-// famous nft menu  
+// query selectors
+var heroSectionEl = document.querySelector("#hero");
+var heroBodyEl = document.querySelector(".hero-body");
 var famousNftDivMenuEl =  document.querySelector("#famous");
+var gallerySectionEl = document.querySelector("#nft-gallery");
+var mintBtnEl = document.querySelector("#mint-btn");
+
+
+// change hero to section
+var changeHero = function(type){
+  if (type == "hero") {
+    heroSectionEl.classList.replace("is-success", "is-link");
+    heroSectionEl.classList.remove("hero-section");
+  }else{
+    heroSectionEl.classList.replace("is-link", "is-success");
+    heroSectionEl.classList.add("hero-section");
+    heroBodyEl.innerHTML = "";
+
+  }
+}
+
+// famous nft menu  
 var aMenuEl = [];
 for (let i = 0; i < featured.length; i++) {
   aMenuEl[i] = document.createElement("a");
@@ -144,7 +164,6 @@ var createNftElements = function (data) {
     name = data.contract.name;
   }
   if(isImage(thumb)){
-    var gallerySectionEl = document.querySelector("#nft-gallery");
     var nftDivEl = document.createElement("div");
     nftDivEl.classList.add("box");
     var aNftEl = document.createElement("a");
@@ -158,8 +177,6 @@ var createNftElements = function (data) {
     nftDivEl.appendChild(h4El);
     gallerySectionEl.appendChild(nftDivEl);
   }
-  
-
 }
 
 // display nfts from wallet
@@ -202,8 +219,8 @@ displayNftDetails = function (data) {
   if (!name) {
     name = data.contract.name;
   }
+  addSectionTitle(name);
   if(isImage(thumb)){
-    var gallerySectionEl = document.querySelector("#nft-gallery");
     gallerySectionEl.classList.add("one-nft");
     var nftDivEl = document.createElement("div");
     nftDivEl.classList.add("box");
@@ -231,26 +248,24 @@ displayNftDetails = function (data) {
 
 }
 
-// add name if address exist famous
-var addFamousName = function(name){
-  var homeSectionEl = document.querySelector(".title");
-  var famousNameH2El = document.createElement("h2");
-  famousNameH2El.textContent = name;
-  homeSectionEl.appendChild(famousNameH2El);
+// add name in section
+var addSectionTitle = function(name){
+  var h2El = document.createElement("h2");
+  h2El.textContent = name;
+  heroBodyEl.appendChild(h2El);
 }
 
 // find famous in wallets object
 var findFamous = function(wallet){
   for(var address in featured) {
     if(featured[address].wallet === wallet) {
-      addFamousName(featured[address].name);
+      addSectionTitle(featured[address].name);
     } 
   }
 }
 
 // loading mint button
 var loadingMintBtn = function(state){
-  var mintBtnEl = document.querySelector("#mint-btn");
   if (state === true) {
     console.log("is", state);
     mintBtnEl.classList.add("is-loading");
@@ -261,21 +276,27 @@ var loadingMintBtn = function(state){
 }
 
 
-
 // query parameters
 var params = (new URL(document.location)).searchParams;
+console.log("PARAMS", params);
 var recent = params.get("recent");
 var wallet = params.get("wallet");
 var contracAddress = params.get("contract-address");
 var tokenId = params.get("tokenid");
 if (wallet) {
+  changeHero("section");
   getNftsByAccount(wallet);
 }
 if (contracAddress && tokenId){
+  changeHero("section");
   getNftDetails(contracAddress, tokenId, true);
 }
 if (recent == 1) {
+  changeHero("section");
+  addSectionTitle("Last Minted NFTs");
   getNfts();
 }
-
+if (params.URLSearchParams === {}) {
+  changeHero("hero");
+}
 

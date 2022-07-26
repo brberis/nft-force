@@ -126,7 +126,16 @@ body {
 
 
 section {
-    padding: 100px 8%;
+    padding: 60px 8% 20px 8%;
+}
+
+.hero-section {
+    text-align: center;
+    padding: 30px auto !important;
+}
+
+.no-display {
+    display: none;
 }
 
 .container {
@@ -227,10 +236,10 @@ section {
 
 }
 
-.title { 
+/* .title { 
     margin: 40px 0 0 0 !important;
     text-align: center;
-}
+} */
 
 .title h2 { 
     font-size: 28px;
