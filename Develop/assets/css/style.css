@@ -14,6 +14,11 @@
     --bg-color: #ffffff;
 }
 
+p {
+    margin: 1em 0 !important;
+}
+
+
 .nav {
     display: flex;
     align-items: center;
@@ -134,6 +139,24 @@ section {
     padding-top: 2rem;
 }
 
+.one-nft {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(360px, 900px));
+}
+
+.detail {
+    color: black;
+    margin-top: 30px;
+    margin-bottom: -20px !important;
+    text-align: left;
+    font-size: 18px !important;
+}
+
+.detail-name {
+    color: black;
+    font-weight: bolder !important;
+}
+
 .box { 
     padding: 0px 20px 10px 20px;
     background: transparent;
@@ -141,6 +164,7 @@ section {
     border-radius: 10px;
     position: relative;
     transition: all .35s ease;
+    margin-bottom: 0!important;
 }
 
 .box img {
@@ -202,6 +226,16 @@ section {
     gap: 2rem;
     margin-bottom: 3rem;
 
+}
+
+.title { 
+    margin: 40px 0 0 0 !important;
+    text-align: center;
+}
+
+.title h2 { 
+    font-size: 28px;
+    font-weight: 800;
 }
 
 .contact-content li {
