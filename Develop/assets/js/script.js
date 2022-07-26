@@ -1,5 +1,6 @@
 // globals
 var nfts = 20; // max fetchs of nfts 
+var nftOnHome = 4 // nft to display in homepage
 var featured = [
                 {name: "Jordan Belfort" , wallet: "0xdbf2445e5049c04cda797dae60ac885e7d79df9d"},
                 {name: "Jake Paul" , wallet: "0xd81e1713C99595Ee29498e521B18491aF9C60415"},
@@ -12,6 +13,7 @@ var featured = [
                 {name: "Oli White" , wallet: "0xe033b12daf37e64d6e664ac5b8eb839ce5b749db"}
               ];     
 var walletName = null;
+var viewableNft = 0;
 var thumbs = [];
 var token = "64ca22d3-4e46-460a-908c-6a898d383d17";
 var headers = {
@@ -61,11 +63,9 @@ var getNfts = function() {
         response.json().then(function(data) {
           loadingMintBtn(true);
           for (let i = 0; i < nfts; i++) {
-            setTimeout(function() {  
+            nftLoop = setTimeout(function() {  
               thumb = getNftDetails(data.nfts[i].contract_address, data.nfts[i].token_id, false);
-              console.log(nfts-1, i);
               if (i === (nfts - 1)){
-  
                 loadingMintBtn(false);
               }
             }, i * 1000);
@@ -163,7 +163,8 @@ var createNftElements = function (data) {
   if (!name) {
     name = data.contract.name;
   }
-  if(isImage(thumb)){
+  if(isImage(thumb) && viewableNft < nftOnHome){
+    console.log("Qty", viewableNft);
     var nftDivEl = document.createElement("div");
     nftDivEl.classList.add("box");
     var aNftEl = document.createElement("a");
@@ -176,6 +177,7 @@ var createNftElements = function (data) {
     nftDivEl.appendChild(aNftEl);
     nftDivEl.appendChild(h4El);
     gallerySectionEl.appendChild(nftDivEl);
+    viewableNft++;
   }
 }
 
@@ -278,7 +280,6 @@ var loadingMintBtn = function(state){
 
 // query parameters
 var params = (new URL(document.location)).searchParams;
-console.log("PARAMS", params);
 var recent = params.get("recent");
 var wallet = params.get("wallet");
 var contracAddress = params.get("contract-address");
@@ -292,11 +293,14 @@ if (contracAddress && tokenId){
   getNftDetails(contracAddress, tokenId, true);
 }
 if (recent == 1) {
+  nftOnHome = nfts;
   changeHero("section");
   addSectionTitle("Last Minted NFTs");
   getNfts();
 }
-if (params.URLSearchParams === {}) {
+if (params.URLSearchParams === undefined) {
   changeHero("hero");
+  getNfts();
+  loadingMintBtn(false);
 }
 

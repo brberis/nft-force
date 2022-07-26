@@ -146,7 +146,7 @@ section {
 
 .container {
     display: grid;
-    grid-template-columns: repeat(3, minmax(360px, auto));
+    grid-template-columns: repeat(4, minmax(160px, auto));
     align-items: center;
     gap: 2rem;
     text-align: center;
