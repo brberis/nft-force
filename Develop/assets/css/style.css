@@ -29,26 +29,12 @@ p {
 }
 
 
-<<<<<<< HEAD
-=======
-.logo {
-    color: #0C0B6C;
-    font-size: var(--main-font);
-	font-weight: 600;
-	line-height: 0.8;
-}
-
-/* span {
-    color: #EF9A0F;
-} */
-
->>>>>>> 14236fd19cab9429255c1f630e1858694f650aea
-#menu-icon{
+/* #menu-icon{
 	font-size: 38px;
 	color: black;
 	z-index: 10001;
 	display: none;
-}
+} */
 
 /* .navbar{
 	display: flex;
@@ -61,34 +47,19 @@ p {
 	margin: 0 10px;
 	transition: all .40s ease;
 }
-.navbar a:hover{
+/* .navbar a:hover{
 	background: white;
 	color: turquoise;
 }
 
-<<<<<<< HEAD
 nav ul li {
-=======
-/* .news{
-	display: inline-block;
-    align-items: right;
-} */
-
-
-/* nav ul li {
->>>>>>> 14236fd19cab9429255c1f630e1858694f650aea
     list-style-type: none;
     display: inline-block;
     padding: 10px 25px;
-} */
+} */ */
 
-<<<<<<< HEAD
-nav ul li a {
-    color: turquoise;
-=======
 /* nav ul li a {
     color: #0C0B6C;
->>>>>>> 14236fd19cab9429255c1f630e1858694f650aea
     text-decoration: none;
     font-weight: bold;
     text-transform: capitalize;
@@ -99,21 +70,7 @@ nav ul li a:hover {
     transition: .4s;
 } */
 
-<<<<<<< HEAD
-.navbar-dropdown {
-    background: turquoise;
-    color: white;
-}
-.navbar-dropdown:hover {
-    background: turquoise;
-    color: black;
-    transition: .4s;
-}
-
-.buttons {
-=======
 /* .btn {
->>>>>>> 14236fd19cab9429255c1f630e1858694f650aea
     background-color: turquoise;
     color:black;
     text-decoration: none;
