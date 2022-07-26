@@ -24,20 +24,9 @@
 }
 
 
-.logo {
-    color: #0C0B6C;
-    font-size: var(--main-font);
-	font-weight: 600;
-	line-height: 0.8;
-}
-
-span {
-    color: #EF9A0F;
-}
-
 #menu-icon{
 	font-size: 38px;
-	color: var(--text-color);
+	color: black;
 	z-index: 10001;
 	display: none;
 }
@@ -47,7 +36,7 @@ span {
 }
 .navbar a{
 	font-size: var(--p-font);
-	color: var(--text-color);
+	color: black;
 	font-weight: 600;
 	padding: 10px 15px;
 	margin: 0 10px;
@@ -58,12 +47,6 @@ span {
 	color: turquoise;
 }
 
-.news{
-	display: inline-block;
-    align-items: right;
-}
-
-
 nav ul li {
     list-style-type: none;
     display: inline-block;
@@ -71,7 +54,7 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #0C0B6C;
+    color: turquoise;
     text-decoration: none;
     font-weight: bold;
     text-transform: capitalize;
@@ -82,7 +65,17 @@ nav ul li a:hover {
     transition: .4s;
 }
 
-.btn {
+.navbar-dropdown {
+    background: turquoise;
+    color: white;
+}
+.navbar-dropdown:hover {
+    background: turquoise;
+    color: black;
+    transition: .4s;
+}
+
+.buttons {
     background-color: turquoise;
     color:black;
     text-decoration: none;
@@ -93,7 +86,7 @@ nav ul li a:hover {
     transition: transform .4s;
 }
 
-.btn:hover {
+.buttons:hover {
     transform: scale(1.2);
 }
 
@@ -258,7 +251,6 @@ footer {
 }
 
 footer p{
-    color:#0C0B6C;
     font-size: 15px;
     font-weight: 600;
     letter-spacing: 2px;
