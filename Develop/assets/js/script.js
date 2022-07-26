@@ -298,7 +298,8 @@ if (recent == 1) {
   addSectionTitle("Last Minted NFTs");
   getNfts();
 }
-if (params.URLSearchParams === undefined) {
+if (!wallet && !recent && !contracAddress) {
+  console.log("sihome",params.length);
   changeHero("hero");
   getNfts();
   loadingMintBtn(false);
