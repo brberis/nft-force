@@ -36,9 +36,9 @@ p {
 	line-height: 0.8;
 }
 
-span {
+/* span {
     color: #EF9A0F;
-}
+} */
 
 #menu-icon{
 	font-size: 38px;
@@ -47,9 +47,9 @@ span {
 	display: none;
 }
 
-.navbar{
+/* .navbar{
 	display: flex;
-}
+} */
 .navbar a{
 	font-size: var(--p-font);
 	color: var(--text-color);
@@ -63,19 +63,19 @@ span {
 	color: turquoise;
 }
 
-.news{
+/* .news{
 	display: inline-block;
     align-items: right;
-}
+} */
 
 
-nav ul li {
+/* nav ul li {
     list-style-type: none;
     display: inline-block;
     padding: 10px 25px;
-}
+} */
 
-nav ul li a {
+/* nav ul li a {
     color: #0C0B6C;
     text-decoration: none;
     font-weight: bold;
@@ -85,9 +85,9 @@ nav ul li a {
 nav ul li a:hover {
     color: turquoise;
     transition: .4s;
-}
+} */
 
-.btn {
+/* .btn {
     background-color: turquoise;
     color:black;
     text-decoration: none;
@@ -100,7 +100,7 @@ nav ul li a:hover {
 
 .btn:hover {
     transform: scale(1.2);
-}
+} */
 
 
 header {
@@ -111,10 +111,9 @@ header {
     position: fixed;
     background: var(--bg-color);
     box-shadow: 0px 2px 18px 0px rgb(129 162 182 / 20%);
-    display: flex;
+    /* display: flex; */
     align-items: center;
     justify-content: space-between;
-    padding: 25px 8%;
     transition: .3s;
 }
 
@@ -158,8 +157,8 @@ section {
 }
 
 .box { 
-    padding: 0px 20px 10px 20px;
-    background: transparent;
+    padding: 20px;
+    /* background: transparent; */
     box-shadow: 5px 30px 56.1276px rgb(55 55 55 / 12%);
     border-radius: 10px;
     position: relative;
@@ -311,7 +310,7 @@ footer p{
     #menu-icon {
         display: block;
     }
-    header {
+    /* header {
         padding: 15px 8%;
     }
     .navbar {
@@ -331,7 +330,7 @@ footer p{
     }
     .navbar .active {
         top: 100%;
-    }
+    } */
 
 }
 

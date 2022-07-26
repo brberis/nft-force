@@ -1,4 +1,5 @@
 // globals
+var nfts = 20; // max fetchs of nfts 
 var featured = [
                 {name: "Jordan Belfort" , wallet: "0xdbf2445e5049c04cda797dae60ac885e7d79df9d"},
                 {name: "Jake Paul" , wallet: "0xd81e1713C99595Ee29498e521B18491aF9C60415"},
@@ -38,20 +39,26 @@ var getNfts = function() {
       // request was successful
       if (response.ok) {
         response.json().then(function(data) {
-          // data.nfts.length
-          for (let i = 0; i < 20; i++) {
+          loadingMintBtn(true);
+          for (let i = 0; i < nfts; i++) {
             setTimeout(function() {  
               thumb = getNftDetails(data.nfts[i].contract_address, data.nfts[i].token_id, false);
-              console.log(thumb);
+              console.log(nfts-1, i);
+              if (i === (nfts - 1)){
+  
+                loadingMintBtn(false);
+              }
             }, i * 1000);
           }
+          
+
           thumbs = [];
-          console.log(thumbs);
         });
       } else {
         // if not successful, redirect to homepage
         console.log("error");
       }
+
     });
 }
 
@@ -82,7 +89,6 @@ var getByContract = function(nfts) {
       }, i * 1000)
     }
   }
-  console.log(lastThumbs);  
 }
 
 // fetch by contract_addresses
@@ -100,9 +106,6 @@ var getNftDetails = function(contracAddress, tokenId, detail) {
             createNftElements(data);
             thumbs.push(data.nft.cached_file_url);
           }
-          console.log(data.nft.cached_file_url);
-          
-          console.log("test");
         }
       });
     } else {
@@ -245,6 +248,17 @@ var findFamous = function(wallet){
   }
 }
 
+// loading mint button
+var loadingMintBtn = function(state){
+  var mintBtnEl = document.querySelector("#mint-btn");
+  if (state === true) {
+    console.log("is", state);
+    mintBtnEl.classList.add("is-loading");
+  }else{
+    console.log("NOW is", state);
+    mintBtnEl.classList.remove("is-loading");
+  }
+}
 
 
 
@@ -263,4 +277,5 @@ if (contracAddress && tokenId){
 if (recent == 1) {
   getNfts();
 }
+
 
