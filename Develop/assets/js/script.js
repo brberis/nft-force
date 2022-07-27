@@ -1,10 +1,9 @@
 // globals
-var nfts = 20; // max fetchs of nfts 
-var nftOnHome = 4 // nft to display in homepage
+var nfts = 50; // max fetchs of nfts 
+var nftOnHome = 8 // nft to display in homepage
 var featured = [
                 {name: "Jordan Belfort" , wallet: "0xdbf2445e5049c04cda797dae60ac885e7d79df9d"},
                 {name: "Jake Paul" , wallet: "0xd81e1713C99595Ee29498e521B18491aF9C60415"},
-                // {name: "Snoop Dogg" , wallet: "0xce90a7949bb78892f159f428d0dc23a8e3584d75"},
                 {name: "Scotty Sire" , wallet: "0xd0a1454963fb17f427fe744a084facd0ed60a774"},
                 {name: "Lil Mayo" , wallet: "0xa582047f7e50acbc8667523e7f62c200709beaed"},
                 {name: "Ben Philips" , wallet: "0x53295d7932767839df07eb175ef03a24dcf3c278"},
@@ -15,6 +14,7 @@ var featured = [
 var walletName = null;
 var viewableNft = 0;
 var thumbs = [];
+var source;
 var token = "64ca22d3-4e46-460a-908c-6a898d383d17";
 var headers = {
                 headers: {
@@ -22,6 +22,12 @@ var headers = {
                   'Content-Type': 'application/json'
                   }
               }
+var favorites = localStorage.getItem("favorites");
+if (!favorites){
+  favorites = [];
+}else{
+  favorites = JSON.parse(favorites);
+}
 
 // query selectors
 var heroSectionEl = document.querySelector("#hero");
@@ -42,7 +48,6 @@ var changeHero = function(type){
     heroSectionEl.classList.replace("is-link", "is-success");
     heroSectionEl.classList.add("hero-section");
     heroBodyEl.innerHTML = "";
-
   }
 }
 
@@ -77,30 +82,24 @@ var searchNfts = function(search) {
       // request was successful
       if (response.ok) {
         response.json().then(function(data) {
-          console.log(data);
           loadingMintBtn(true);
           for (let i = 0; i < data.search_results.length; i++) {
             if (!thumbs.includes(data.search_results.cached_file_url)) {
-              createNftElements(data.search_results[i], "from_search");
+              createNftElements(data.search_results[i], source);
               thumbs.push(data.search_results[i].cached_file_url);
             }
           }
           loadingMintBtn(false);
-
-
           thumbs = [];
         });
       } else {
         // if not successful, redirect to homepage
         console.log("error");
       }
-
     });
 }
 
-
-
-// fetch last 50 ntfs contract_addresses
+// fetch last 50 minted ntfs contract_addresses
 var getNfts = function() {
   var apiUrl = "https://api.nftport.xyz/v0/nfts?chain=ethereum";
   fetch(apiUrl, headers).then(function(response) {
@@ -116,23 +115,34 @@ var getNfts = function() {
               }
             }, i * 1000);
           }
-          
-
           thumbs = [];
         });
       } else {
         // if not successful, redirect to homepage
         console.log("error");
       }
-
     });
 }
 
+// display favorites
+var displayFavorites = function() {
+  loadingMintBtn(true);
+  for (let i = 0; i < favorites.length; i++) {
+    nftLoop = setTimeout(function() {  
+      // console.log("contract", favorites);
+      thumb = getNftDetails(favorites[i].address, favorites[i].token, false);
+      if (i === (favorites.length - 1)){
+        loadingMintBtn(false);
+      }
+    }, i * 1000);
+  }
+  thumbs = [];
+}
 
 // fetch by contract_addresses
 var getByContract = function(nfts) {
   var lastThumbs = [];
-  findFamous(wallet);
+  findFamous(walletParam);
   for (let i = 0; i < nfts.length; i++) {
     if (nfts[i]) {
       setTimeout(function() {   
@@ -142,8 +152,7 @@ var getByContract = function(nfts) {
           if (response.ok) {
             response.json().then(function(data) {
               if (!lastThumbs.includes(data.nfts[0].cached_file_url)) {
-              console.log(data);
-              createNftElementsFromWallet(data);
+                createNftElements(data, source);
               }
               lastThumbs.push(data.nfts[0].cached_file_url);
             });
@@ -157,7 +166,7 @@ var getByContract = function(nfts) {
   }
 }
 
-// fetch by contract_addresses
+// fetch by contract addresses and token id
 var getNftDetails = function(contracAddress, tokenId, detail) {
   var apiUrl = "https://api.nftport.xyz/v0/nfts/" + contracAddress + "/" + tokenId + "?chain=ethereum";
   fetch(apiUrl, headers).then(function(response) {
@@ -169,7 +178,7 @@ var getNftDetails = function(contracAddress, tokenId, detail) {
           displayNftDetails(data);
         }else{
           if (!thumbs.includes(data.nft.cached_file_url)) {
-            createNftElements(data);
+            createNftElements(data, source);
             thumbs.push(data.nft.cached_file_url);
           }
         }
@@ -202,9 +211,9 @@ var isImage = function (url) {
 // display nfts 
 var createNftElements = function (data, source) {
   var name = null;
-  if (!source) {
+  if (!source || source == "my_favorites") {
     var thumb = data.nft.cached_file_url;
-    var adddress = data.nft.contract_address;
+    var address = data.nft.contract_address;
     var tokenId = data.nft.token_id;
     if (data.nft.metadata){
       name = data.nft.metadata.name;
@@ -214,53 +223,48 @@ var createNftElements = function (data, source) {
     }
   }else if (source == "from_search"){
     var thumb = data.cached_file_url;
-    var adddress = data.contract_address
+    var address = data.contract_address
     var tokenId = data.token_id;
     name = data.name;
+  } else if (source == "from_wallet"){
+    var thumb = data.nfts[0].cached_file_url;
+    var name = data.nfts[0].metadata.name;
+    var address = data.nfts[0].contract_address;
+    var tokenId = data.nfts[0].token_id;
   }
+  
+  var isFavorite = favorites.findIndex(
+    i => i.address === address &&
+    i.token === tokenId);
 
-  if(isImage(thumb) && viewableNft < nftOnHome){
-    console.log("Qty", viewableNft);
+  if (isImage(thumb) && viewableNft < nftOnHome){
     var nftDivEl = document.createElement("div");
     nftDivEl.classList.add("box");
     var aNftEl = document.createElement("a");
-    aNftEl.href = "./index.html?contract-address=" + adddress + "&tokenid=" + tokenId;
+    aNftEl.href = "./index.html?contract-address=" + address + "&tokenid=" + tokenId;
     var nftImgEl = document.createElement("img");
     nftImgEl.src = thumb;
-    var h4El = document.createElement("h4");
-    h4El.textContent = name;
+    var descDivEl = document.createElement("div");
+    descDivEl.classList.add("thumb-descr", "is-flex");
+    var nameSpanEl = document.createElement("span");
+    nameSpanEl.classList.add("name");
+    nameSpanEl.textContent = name;
+    var heartSpanEl = document.createElement("span");
+    heartSpanEl.classList.add("heart");
+    console.log("Es",isFavorite, data);
+    if (isFavorite >= 0){
+      heartSpanEl.innerHTML = "<i onclick='favoriteNftHandler(this)' class='fa fa-heart unloved loved' data-address=" + address + " data-token=" + tokenId + "></i>"
+    }else{
+      heartSpanEl.innerHTML = "<i onclick='favoriteNftHandler(this)' class='fa fa-heart unloved' data-address=" + address + " data-token=" + tokenId + "></i>"
+    }
     aNftEl.appendChild(nftImgEl);
     nftDivEl.appendChild(aNftEl);
-    nftDivEl.appendChild(h4El);
+    descDivEl.appendChild(nameSpanEl);
+    descDivEl.appendChild(heartSpanEl);
+    nftDivEl.appendChild(descDivEl);
     gallerySectionEl.appendChild(nftDivEl);
     viewableNft++;
   }
-}
-
-// display nfts from wallet
-var createNftElementsFromWallet = function (data) {
-  var thumb = data.nfts[0].cached_file_url;
-  var name = data.nfts[0].metadata.name;
-  var gallerySectionEl = document.querySelector("#nft-gallery");
-
-  if (!name) {
-    name = data.contract.name;
-  }
-  if(isImage(thumb)){
-    var nftDivEl = document.createElement("div");
-    nftDivEl.classList.add("box");
-    var aNftEl = document.createElement("a");
-    aNftEl.href = "./index.html?contract-address=" + data.nfts[0].contract_address + "&tokenid=" + data.nfts[0].token_id;
-    var nftImgEl = document.createElement("img");
-    nftImgEl.src = thumb;
-    var h4El = document.createElement("h4");
-    h4El.textContent = name;
-    aNftEl.appendChild(nftImgEl);
-    nftDivEl.appendChild(aNftEl);
-    nftDivEl.appendChild(h4El);
-    gallerySectionEl.appendChild(nftDivEl);
-  }
-
 }
 
 // display nft detail
@@ -328,44 +332,82 @@ var loadingMintBtn = function(state){
     console.log("is", state);
     mintBtnEl.classList.add("is-loading");
   }else{
-    console.log("NOW is", state);
     mintBtnEl.classList.remove("is-loading");
   }
 }
 
+// favorite nft handler
+function favoriteNftHandler(x) {
+  var address = x.getAttribute("data-address");
+  var tokenId = x.getAttribute("data-token");
+  var heart = x.getAttribute("class");
+  heart = heart.split(" ");
+  console.log(heart[heart.length-1]);
+  if (heart[heart.length-1] === "unloved"){
+    var lovedNft = {"address": address, "token": tokenId};
+    favorites.push(lovedNft);
+  }else{
+    var index = favorites.findIndex(
+        i => i.address === address &&
+        i.token === tokenId);
+    console.log("index", index);
+    favorites.splice(index, 1);
+  }
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+  console.log("favor +", favorites);
+  x.classList.toggle("loved");
+
+}
 
 // query parameters
 var params = (new URL(document.location)).searchParams;
-var recent = params.get("recent");
-var search = params.get("search");
-var wallet = params.get("wallet");
-var contracAddress = params.get("contract-address");
-var tokenId = params.get("tokenid");
-if (wallet) {
-  changeHero("section");
-  getNftsByAccount(wallet);
-}
-if (contracAddress && tokenId){
-  changeHero("section");
-  getNftDetails(contracAddress, tokenId, true);
-}
-if (search) {
+var recentParam = params.get("recent");
+var searchParam = params.get("search");
+var walletParam = params.get("wallet");
+var favoritesParam = params.get("favorites");
+var contracAddressParam = params.get("contract-address");
+var tokenIdParam = params.get("tokenid");
+
+// routing
+if (walletParam) {
   nftOnHome = nfts;
+  source = "from_wallet";
+  changeHero("section");
+  getNftsByAccount(walletParam);
+}
+
+if (contracAddressParam && tokenIdParam){
+  changeHero("section");
+  getNftDetails(contracAddressParam, tokenIdParam, true);
+}
+
+if (searchParam) {
+  nftOnHome = nfts;
+  source = "from_search";
   changeHero("section");
   addSectionTitle("Search results");
-  searchNfts(search);
+  searchNfts(searchParam);
 }
-if (recent == 1) {
+
+if (recentParam == 1) {
   nftOnHome = nfts;
   changeHero("section");
   addSectionTitle("Last Minted NFTs");
   getNfts();
 }
-if (!wallet && !recent && !contracAddress && !search) {
+
+if (favoritesParam == 1) {
+  nftOnHome = nfts;
+  source = "my_favorites";
+  changeHero("section");
+  addSectionTitle("My Favorites");
+  displayFavorites();
+}
+
+if (!walletParam && !recentParam && !contracAddressParam && !searchParam && !favoritesParam) {
+  source = "from_search";
   changeHero("hero");
-  getNfts();
-  loadingMintBtn(false);
+  searchNfts("famous");
 }
 
 searchFormEl.addEventListener("submit", formSubmitHandler);
-

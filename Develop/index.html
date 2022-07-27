@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-      <meta charset="UTF-8"/>
-      <meta name="viewport" content="width=device-width, inital-scale=1">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>NFTFORCE</title>
-      <!-- <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"> -->
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-      <link rel="stylesheet"  href="./assets/css/style.css">
-
-
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFTFORCE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
   </head>
+
   <body>
     <!-- header -->
     <header> 
       <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-          <a class="navbar-item" href="#">
+          <a class="navbar-item" href="./index.html">
             <img src="./assets/images/nftforce.png" width="112" height="28">
           </a>
-      
           <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -35,21 +31,17 @@
             <a class="navbar-item" href="./index.html">
               Home
             </a>
-      
-            <a class="navbar-item" href="#">
-              Documentation
+            <a class="navbar-item" href="./index.html?favorites=1">
+              My Favorites
             </a>
-      
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link">
                 Famous Wallets
               </a>
-
               <div id="famous" class="navbar-dropdown">
               </div>
             </div>
           </div>
-      
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="buttons">
@@ -62,7 +54,8 @@
         </div>
       </nav>
     </header>
-   
+
+    <!-- hero section -->
     <section id="hero" class="hero title is-link">
       <div class="hero-body">
         <p class="title">
@@ -70,7 +63,7 @@
         </p>
         <form id="search-form" class="field has-addons">
           <div class="control">
-            <input id="search" name="nft" class="input" type="text" placeholder="Name or description">
+            <input id="search" name="nft" class="input" type="text" placeholder="Wallet, name or description">
           </div>
           <div class="control">
             <button type="submit" class="button is-info">
@@ -81,59 +74,48 @@
       </div>
     </section>
 
-
-
-
-     <!-- hero section -->
-     <section class="section home pt-0" id="home">
-        <div class="title">
-          <!-- gallery title -->
-        </div>
+     <!-- main section -->
+    <section class="section home pt-0" id="home">
         <div id="nft-gallery" class="container">
           <!-- nft gallery -->
         </div>
-     </section>
- 
+    </section>
 
-     <!--documentation section-->
-     <section class="section doc" id="doc">
-        <div class="doc-content">
-            <h2>Documentation</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti consequuntur alias porro. Voluptatibus animi accusamus eligendi sint laboriosam voluptates. Corrupti asperiores a quaerat alias laborum earum neque magni. Soluta, quisquam?</p>
-        </div>
-     </section>
+    <!--documentation section-->
+    <section class="section doc" id="doc">
+      <div class="doc-content">
+          <h2>Documentation</h2>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti consequuntur alias porro. Voluptatibus animi accusamus eligendi sint laboriosam voluptates. Corrupti asperiores a quaerat alias laborum earum neque magni. Soluta, quisquam?</p>
+      </div>
+    </section>
 
-     <!-- wallet section-->
-     <section class="wallet" id="wallet">
-        
-     </section>
-
-     <!-- contact us section. I can change it to a About section-->
-     <section class="contact" id="contact">
+     <!-- footer section -->
+    <footer>
+      <section class="contact" id="contact">
         <div class="main-contact">
-            <div class="contact-content">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#doc">Documentation</a></li>
-                <li><a href="#">Famous Wallets</a></li>
-                <li><a href="#contact">Contact Us</a></li>  
-            </div>
-            
-            <div class="contact-content">
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">Email: random@somewhere.com</a></li>  
-            </div>
+          <div class="contact-content">
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="./index.html?favorites=1">My Favorites</a></li>
+              <li><a href="#">Documentation</a></li>
+              <li><a href="#">Contact Us</a></li>  
+          </div>
+          
+          <div class="contact-content">
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Email: random@somewhere.com</a></li>  
+          </div>
 
-            <div class="action">
-                <form>
-                    <input type="email" name="email" placeholder="Your Email" required>
-                    <input type="submit" name="submit" value="Submit" required>
-                </form>  
-            </div>
+          <div class="action">
+              <form>
+                  <input type="email" name="email" placeholder="Your Email" required>
+                  <input type="submit" name="submit" value="Submit" required>
+              </form>  
+          </div>
         </div>
-     </section>
-     <footer>
+      </section>
       Class 2022. Created by Cristobal Barberis, Will Morales and Conny Leyva.
     </footer>
+
     <script src="./assets/js/script.js"></script>
     <script src="./assets/js/bulma.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
