@@ -148,7 +148,7 @@ section {
 /* nft gallery end */
 
 .doc {
-    background:#0C0B6C;
+    background:#49566c;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -182,7 +182,7 @@ section {
 
 .contact {
     padding: 80px 17%;
-    background: navy;
+    background: #495fc7;
 }
 
 .main-contact {
