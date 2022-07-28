@@ -64,6 +64,10 @@ section {
     width: 100%;
 }
 
+.input::placeholder {
+    color:#a7a7a7;
+}
+
 .no-display {
     display: none;
 }
@@ -155,13 +159,13 @@ section {
     flex-direction:column;
 }
 
- .thumb-descr {
+.thumb-descr {
     font-size: 20px;
 }
 
 .doc-content {
     text-align: center;
-
+    margin-bottom: 30px;
 }
 
 .doc h2 {
@@ -176,6 +180,14 @@ section {
     font-weight: 600;
     color: white;
     line-height: 30px;
+}
+
+.tile {
+    min-width: 170px;
+}
+
+.tile span {
+    font-size:20px;
 }
 
 .contact {

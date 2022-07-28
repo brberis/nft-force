@@ -2,6 +2,8 @@
 var nfts = 50; // max fetchs of nfts 
 var nftOnHome = 8 // nft to display in homepage
 var apiKey = "64ca22d3-4e46-460a-908c-6a898d383d17"
+var numberFormatter = Intl.NumberFormat('en-US');
+
 var featured = [
                 {name: "Jordan Belfort" , wallet: "0xdbf2445e5049c04cda797dae60ac885e7d79df9d"},
                 {name: "Jake Paul" , wallet: "0xd81e1713C99595Ee29498e521B18491aF9C60415"},
@@ -38,7 +40,7 @@ var gallerySectionEl = document.querySelector("#nft-gallery");
 var mintBtnEl = document.querySelector("#mint-btn");
 var searchFormEl = document.querySelector("#search-form");
 var nftInputEl = document.querySelector("#search");
-// var searchEl = document.querySelector("#search");
+var ethPEl = document.querySelector("#eth");
 
 // change hero to section
 var changeHero = function(type){
@@ -51,6 +53,18 @@ var changeHero = function(type){
     heroBodyEl.innerHTML = "";
   }
 }
+
+// ethereum price
+var coinApiUrl = "https://api.coinbase.com/v2/prices/ETH-USD/spot";
+fetch(coinApiUrl, headers).then(function(response) {
+    if (response.ok) {
+      response.json().then(function(data) {
+        var etherPrice = Math.round(data.data.amount);
+        etherPrice = numberFormatter.format(etherPrice);
+        ethPEl.textContent = "$" + etherPrice;
+      });
+    }
+  });
 
 // validate ethereum address
 function validateInputAddress(address) {
@@ -123,7 +137,6 @@ var searchNfts = function(search) {
       // request was successful
       if (response.ok) {
         response.json().then(function(data) {
-          console.log(data);
           if (source === "from_image") {
             var results = data.nfts;
           }else{
@@ -173,6 +186,9 @@ var getNfts = function() {
 // display favorites
 var displayFavorites = function() {
   loadingMintBtn(true);
+  if (favorites.length == 0) {
+    showAlert(true, "You don't have favorites yet. Start clicking the hearts! ", "is-info");
+  }
   for (let i = 0; i < favorites.length; i++) {
     nftLoop = setTimeout(function() {  
       thumb = getNftDetails(favorites[i].address, favorites[i].token, false);
