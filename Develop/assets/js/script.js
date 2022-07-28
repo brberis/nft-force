@@ -356,14 +356,14 @@ var addSectionTitle = function(name){
     heroSectionEl.classList.toggle("hero-section");
     heroBodyEl.innerHTML =  '<form id="search-form" class="field has-addons search-section-align">' +
     '<div class="control">' +
-    '<input id="search" name="search" class="input" type="text" placeholder="Enter wallet, name, description or image url.">' +
+    '<input id="search" name="search" class="input" type="text" placeholder="Enter wallet, name or description.">' +
     '</div>' +
     '<div class="control">' +
     '<button type="submit" class="button is-info">' +
       'Search' +
     '</button>' +
     '</div>' +
-    '<div id="drop" class="layout-column twelve" ondrop="drop(event)" ondragover="return false">Drop an image</div>' +
+    '<div id="drop" class="layout-column twelve" ondrop="drop(event)" ondragover="return false">Drop a NFT here!</div>' +
     '</form>';
 
     var dropbox = document.getElementById('drop');
@@ -374,13 +374,21 @@ var addSectionTitle = function(name){
 
 // drag and drop image
 function drop(event) {
+  console.log(event);
     event.stopPropagation();
     event.preventDefault(); 
     var imageUrl = event.dataTransfer.getData('text/html');
     var rex = /src="?([^"\s]+)"?\s*/;
     var droppedImageUrl;
     droppedImageUrl = rex.exec(imageUrl);
-    window.location.replace("./index.html?image=" + droppedImageUrl[1]);
+    try {
+      if (droppedImageUrl[1]) {
+        window.location.replace("./index.html?image=" + droppedImageUrl[1]);
+      }    
+    }
+    catch(err) {
+      return
+    }
 }
 
 
