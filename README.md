@@ -40,6 +40,12 @@ The team works using Agile method and project management from Github.
 * Develop NFT trading section.
 * Create and mint your NTFs section.
 
+
+### Limitations
+
+* This project doesn't use database. All favorites NFTs are store on client side.
+* Free API has a limit of fetch per second. And max total per event.
+
 ### Live Demo  
 
 [Site Demo](https://brberis.github.io/nft-force/Develop)
