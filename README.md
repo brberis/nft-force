@@ -39,7 +39,20 @@ The team works using Agile method and project management from Github.
 * Delivery recommendations to clients.
 * Develop NFT trading section.
 * Create and mint your NTFs section.
+* Documentation.
 
+### Technologies 
+
+* JavaScript (ES6 Standard)
+* Bulma CSS Framework
+* MomentJS
+* Local Storage JS
+* Rest API Standard
+* NFTPort API
+* Coinbase API
+* Git conventions
+* GitHub Project Management
+* VSCode
 
 ### Limitations
 
