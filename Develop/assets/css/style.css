@@ -300,8 +300,13 @@ footer p{
     }
 
     #drop {
-        margin: 20px 20px 0 20px;
+        display: none; 
     }
+
+    /* in beta - display drag and dop in mobiles */
+    /* #drop {
+        margin: 20px 20px 0 20px;  
+    } */
 }
 
 
