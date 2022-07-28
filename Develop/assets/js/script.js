@@ -1,6 +1,7 @@
 // globals
 var nfts = 50; // max fetchs of nfts 
 var nftOnHome = 8 // nft to display in homepage
+var apiKey = "64ca22d3-4e46-460a-908c-6a898d383d17"
 var featured = [
                 {name: "Jordan Belfort" , wallet: "0xdbf2445e5049c04cda797dae60ac885e7d79df9d"},
                 {name: "Jake Paul" , wallet: "0xd81e1713C99595Ee29498e521B18491aF9C60415"},
@@ -15,10 +16,9 @@ var walletName = null;
 var viewableNft = 0;
 var thumbs = [];
 var source;
-var token = "64ca22d3-4e46-460a-908c-6a898d383d17";
 var headers = {
                 headers: {
-                  'Authorization': '64ca22d3-4e46-460a-908c-6a898d383d17',
+                  'Authorization': apiKey,
                   'Content-Type': 'application/json'
                   }
               }
@@ -57,6 +57,11 @@ function validateInputAddress(address) {
   return (/^(0x){1}[0-9a-fA-F]{40}$/i.test(address));
 }
 
+// validate image url
+function validateImageUrl(url) {
+  return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
+}
+
 // nft search handler
 var formSubmitHandler = function(event) {
   event.preventDefault();
@@ -64,14 +69,17 @@ var formSubmitHandler = function(event) {
   var nftData = nftInputEl.value.trim();
   if (validateInputAddress(nftData)) {
     window.location.replace("./index.html?wallet=" + nftData);
+  } else if (validateImageUrl(nftData)) {
+    window.location.replace("./index.html?image=" + nftData);
   } else if (nftData) {
     window.location.replace("./index.html?search=" + nftData);
-  }else{
+  } else {
     nftInputEl.setAttribute("placeholder", "Please enter a string")
     nftInputEl.classList.add("required", "placeholder-alert");
     nftInputEl.focus()
   }
 };
+
 
 // famous nft menu  
 var aMenuEl = [];
@@ -98,15 +106,33 @@ var showAlert = function(visible, alert, style){
 // search nft into ethereum 
 var searchNfts = function(search) {
   loadingMintBtn(true);
-  var apiUrl = "https://api.nftport.xyz/v0/search?text=" + search;
+  if (source === "from_image"){
+    var apiUrl = "https://api.nftport.xyz/v0/recommendations/similar_nfts/urls";
+    headers = {
+                "method": "POST",
+                "headers": {
+                  "Content-Type": "application/json",
+                  "Authorization": apiKey
+                },
+                "body": "{\"url\":\"" + search + "\",\"page_number\":1,\"page_size\":50}"
+              }
+  } else {
+    var apiUrl = "https://api.nftport.xyz/v0/search?text=" + search;
+  }
   fetch(apiUrl, headers).then(function(response) {
       // request was successful
       if (response.ok) {
         response.json().then(function(data) {
-          for (let i = 0; i < data.search_results.length; i++) {
-            if (!thumbs.includes(data.search_results.cached_file_url)) {
-              createNftElements(data.search_results[i], source);
-              thumbs.push(data.search_results[i].cached_file_url);
+          console.log(data);
+          if (source === "from_image") {
+            var results = data.nfts;
+          }else{
+            var results = data.search_results;
+          }
+          for (let i = 0; i < results.length; i++) {
+            if (!thumbs.includes(results[i].cached_file_url)) {
+              createNftElements(results[i], source);
+              thumbs.push(results[i].cached_file_url);
             }
           }
           loadingMintBtn(false);
@@ -222,7 +248,7 @@ var createNftElements = function (data, source) {
     if (!name) {
       name = data.contract.name;
     }
-  } else if (source == "from_search"){
+  } else if (source == "from_search" || source == "from_image"){
     var thumb = data.cached_file_url;
     var address = data.contract_address
     var tokenId = data.token_id;
@@ -360,6 +386,7 @@ function favoriteNftHandler(x) {
 var params = (new URL(document.location)).searchParams;
 var recentParam = params.get("recent");
 var searchParam = params.get("search");
+var imageParam = params.get("image");
 var walletParam = params.get("wallet");
 var favoritesParam = params.get("favorites");
 var contracAddressParam = params.get("contract-address");
@@ -387,6 +414,14 @@ if (searchParam) {
   searchNfts(searchParam);
 }
 
+if (imageParam) {
+  nftOnHome = nfts;
+  source = "from_image";
+  changeHero("section");
+  addSectionTitle("Search results");
+  searchNfts(imageParam);
+}
+
 if (recentParam == 1) {
   nftOnHome = nfts;
   changeHero("section");
@@ -402,7 +437,7 @@ if (favoritesParam == 1) {
   displayFavorites();
 }
 
-if (!walletParam && !recentParam && !contracAddressParam && !searchParam && !favoritesParam) {
+if (!walletParam && !recentParam && !contracAddressParam && !searchParam && !favoritesParam && !imageParam) {
   source = "from_search";
   changeHero("hero");
   searchNfts("famous");
