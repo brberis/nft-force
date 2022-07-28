@@ -56,6 +56,14 @@ section {
     padding: 30px auto !important;
 }
 
+.hero-body-section {
+    padding: 20px;
+}
+
+.search-section-align {
+    align-items: center;
+}
+
 .placeholder-alert::placeholder  {
     color:brown;
 }
@@ -148,6 +156,18 @@ section {
 .loved {
     font-size: 20px;
     color: red;
+}
+
+#drop {
+    float: right;
+    padding: 20px;
+    border: 2px dashed white;
+    opacity: 0.8;
+    width: 400px;
+    height: 100px;
+    font-size: 24px;
+    text-align: center;
+       
 }
 /* nft gallery end */
 
@@ -273,3 +293,15 @@ footer p{
 
     }
 }
+
+@media (max-width: 570px) {
+    .search-section-align {
+        flex-direction: column;
+    }
+
+    #drop {
+        margin: 20px 20px 0 20px;
+    }
+}
+
+
