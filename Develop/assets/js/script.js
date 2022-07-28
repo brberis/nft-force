@@ -5,7 +5,6 @@ var apiKey = "64ca22d3-4e46-460a-908c-6a898d383d17"
 var numberFormatter = Intl.NumberFormat('en-US');
 
 var featured = [
-                {name: "Jordan Belfort" , wallet: "0xdbf2445e5049c04cda797dae60ac885e7d79df9d"},
                 {name: "Jake Paul" , wallet: "0xd81e1713C99595Ee29498e521B18491aF9C60415"},
                 {name: "Scotty Sire" , wallet: "0xd0a1454963fb17f427fe744a084facd0ed60a774"},
                 {name: "Lil Mayo" , wallet: "0xa582047f7e50acbc8667523e7f62c200709beaed"},
@@ -352,7 +351,38 @@ var addSectionTitle = function(name){
   var h2El = document.createElement("h2");
   h2El.textContent = name;
   heroBodyEl.appendChild(h2El);
+  if (source === "from_search" || source === "from_image") { 
+    heroBodyEl.classList.add("hero-body-section");
+    heroSectionEl.classList.toggle("hero-section");
+    heroBodyEl.innerHTML =  '<form id="search-form" class="field has-addons search-section-align">' +
+    '<div class="control">' +
+    '<input id="search" name="search" class="input" type="text" placeholder="Enter wallet, name, description or image url.">' +
+    '</div>' +
+    '<div class="control">' +
+    '<button type="submit" class="button is-info">' +
+      'Search' +
+    '</button>' +
+    '</div>' +
+    '<div id="drop" class="layout-column twelve" ondrop="drop(event)" ondragover="return false">Drop an image</div>' +
+    '</form>';
+
+    var dropbox = document.getElementById('drop');
+    dropbox.addEventListener('drop', drop, false);
+  }
 }
+
+
+// drag and drop image
+function drop(event) {
+    event.stopPropagation();
+    event.preventDefault(); 
+    var imageUrl = event.dataTransfer.getData('text/html');
+    var rex = /src="?([^"\s]+)"?\s*/;
+    var droppedImageUrl;
+    droppedImageUrl = rex.exec(imageUrl);
+    window.location.replace("./index.html?image=" + droppedImageUrl[1]);
+}
+
 
 // find famous in wallets object
 var findFamous = function(walletParam){
