@@ -44,12 +44,12 @@ The team works using Agile method and project management from Github.
 ### Technologies 
 
 * JavaScript (ES6 Standard)
-* Bulma CSS Framework
-* MomentJS
+* [Bulma CSS Framework](https://bulma.io)
+* [MomentJS](https://momentjs.com)
 * Local Storage JS
 * Rest API Standard
-* NFTPort API
-* Coinbase API
+* [NFTPort API](http://nftport.xyz/)
+* [Coinbase API](https://www.coinbase.com/cloud)
 * Git conventions
 * GitHub Project Management
 * VSCode
