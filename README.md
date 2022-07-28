@@ -49,9 +49,9 @@ The team works using Agile method and project management from Github.
 
 Contributors names:
 
-Conny Leyva
-Will Morales
-Cristobal A Barberis  
+* Conny Leyva
+* Will Morales
+* Cristobal A Barberis  
 
 
 ## Version History
