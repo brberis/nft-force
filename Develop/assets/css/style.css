@@ -19,10 +19,6 @@ p {
     margin: 1em 0 !important;
 }
 
-div {
-    display: inline;
-}
-
 
 body {
     /* background-image: url(../images/background-image2.png); */
@@ -58,6 +54,10 @@ section {
 .hero-section {
     text-align: center;
     padding: 30px auto !important;
+}
+
+.placeholder-alert::placeholder  {
+    color:brown;
 }
 
 .control {
@@ -158,8 +158,6 @@ section {
  .thumb-descr {
     font-size: 20px;
 }
-
-
 
 .doc-content {
     text-align: center;
