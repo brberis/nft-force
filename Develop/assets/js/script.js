@@ -220,7 +220,7 @@ var getNftDetails = function(contracAddress, tokenId, detail) {
       throw new Error(response.status);
     }
   }).catch(function(e){ 
-    console.error("This NFTs with this address could not be found. -Server side error.");
+    showAlert(true, "We couldn't find details of this NFT. Try another one.", "is-warning");
   });
 }
 
