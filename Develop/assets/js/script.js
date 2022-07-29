@@ -252,22 +252,31 @@ var isImage = function (url) {
 
 // display nfts 
 var createNftElements = function (data, source) {
-  var name = null;
+  var name;
+  var thumb;
+  var address;
+  var tokenId;
+
   if (!source || source == "my_favorites" || source == "from_wallet") {
-    var thumb = data.nft.cached_file_url;
-    var address = data.nft.contract_address;
-    var tokenId = data.nft.token_id;
+    thumb = data.nft.cached_file_url;
+    address = data.nft.contract_address;
+    tokenId = data.nft.token_id;
     if (data.nft.metadata){
       name = data.nft.metadata.name;
     }
     if (!name) {
       name = data.contract.name;
     }
-  } else if (source == "from_search" || source == "from_image"){
-    var thumb = data.cached_file_url;
-    var address = data.contract_address
-    var tokenId = data.token_id;
+  } else if (source == "from_search"){
+    thumb = data.cached_file_url;
+    address = data.contract_address
+    tokenId = data.token_id;
     name = data.name;
+  } else if (source == "from_image"){
+    thumb = data.cached_file_url;
+    address = data.contract_address
+    tokenId = data.token_id;
+    name = data.metadata.name;
   } 
 
   var isFavorite = favorites.findIndex(
