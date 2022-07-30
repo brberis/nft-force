@@ -23,8 +23,8 @@ The team works using Agile method and project management from Github.
 
 ## Features 
 
-* Search NFTs by; wallet address, name, description.
-* Search NFTs by image url to get recommendations.
+* Search NFTs by; wallet address, name, description or image url.
+* Drag and drop NFTs to get recommendations.
 * Get lasted NFTs transactions and mints.
 * Watch famous wallets NFTs.
 * Save your favorite NFTs.
