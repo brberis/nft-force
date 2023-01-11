@@ -54,6 +54,16 @@ The team works using Agile method and project management from Github.
 * GitHub Project Management
 * VSCode
 
+## How to Deploy
+
+To deploy this NFT application, please follow these steps:
+
+1. Clone the repository by running the command git clone: 
+[https://github.com/brberis/nft-force.git](https://github.com/brberis/nft-force.git)
+2. Navigate to the root of the project directory using the command `cd repo-name`.
+3. Deploy it to your own repo.
+4. Use github pages to deploy.
+
 ### Limitations
 
 * This project doesn't use database. All favorites NFTs are store on client side.
