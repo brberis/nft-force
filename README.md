@@ -15,6 +15,17 @@ The team works using Agile method and project management from Github.
 
 <br/>
 
+## User Story
+
+As an art enthusiast, I want to be able to easily search for NFT art and find recommendations based on my interests, so that I can discover new and exciting pieces.
+
+When I open the app, I am presented with a search bar that I can use to find specific NFT art pieces. The search combines multiple endpoints to unify the results and give me a comprehensive view of available pieces.
+
+Additionally, the app uses NFT Port's AI image recognition to provide me with recommendations based on the image inputs I provide.
+
+Finally I can save my favorite NFTs.
+
+
 ## Getting Started
 
 ![alt text](https://github.com/brberis/nft-force/blob/main/Develop/assets/images/web.png)
